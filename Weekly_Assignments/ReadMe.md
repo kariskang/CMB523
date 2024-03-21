@@ -1,1 +1,2 @@
-## A folder for assignment submissions for CMB523 Spring 2024
+## Read Me
+A folder for assignment submissions for CMB523 Spring 2024 
