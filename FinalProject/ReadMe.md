@@ -8,9 +8,72 @@ Sea level rise (SLR) in the U.S. northeast is ~3-4 times the global average, inc
 ### Data 
 All *Spartina* RADseq data was downloaded from the [study's page on GenBank](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA733197) as FASTQ files. Five samples were chosen from a single site in New Hampshire and five from a single site in North Carolina, as cross referenced with the biosample data available; because tall- or short-form identifying data could not be found through the database, I opted to go with two sites (NH1 and NC1) where the form had been classified as "unidentified", rather than risk comparing sites from which two distinct types of *Spartina* had been collected. FASTQ files were imported and filtered for non-reads using the [ShortRead library from the Bioconductor package](https://bioconductor.org/packages/release/bioc/html/ShortRead.html). 
 
+#### Samples: 
+__New Hampshire:__
+Site: Great Bay, NH
+Year: 2012
+LatLong: 43.091489 N 70.864721 W
+
+Sample name: Spartina_NHH_010
+File name: SRR14677000.fastq.gz
+BioSample: SAMN19370416 
+SRA: SRS9088595
+
+Sample name: Spartina_NHH_012 
+File name: SRR14677304
+BioSample: SAMN19370418 
+SRA: SRS9088291
+
+Sample name: Spartina_NHH_015 
+File name: SRR14677301
+BioSample: SAMN19370421 
+SRA: SRS9088294
+
+Sample name: Spartina_NHH_019 
+File name: SRR14677297
+BioSample: SAMN19370425 
+SRA: SRS9088298
+
+Sample name: Spartina_NHH_020 
+File name: SRR14677296
+BioSample: SAMN19370426; 
+SRA: SRS9088299
+
+__North Carolina:__
+Site: Middle Marsh, North Carolina
+Year 2012 
+LatLong: 34.689328 N 76.621075 W
+
+Sample name: Spartina_NCC_018
+File name: SRR14677011.fastq.gz
+BioSample: SAMN19370406
+SRA: SRS9088584 
+
+Sample name: Spartina_NCC_015
+File name: SRR14677013.fastq.gz
+BioSample: SAMN19370404
+SRA: SRS9088582
+
+Sample name: Spartina_NCC_012 
+File name: SRR14677014
+BioSample: SAMN19370403 
+SRA: SRS9088581
+
+Sample name: Spartina_NCC_007
+File name: SRR14677018
+BioSample: SAMN19370399 
+SRA: SRS9088577
+
+Sample name: Spartina_NCC_017 
+SRR14677012
+BioSample: SAMN19370405 
+SRA: SRS9088583
+
+### Methods 
+A random target sequence of 10 bp long was chosen from the cleaned sequence read for Spartina_NHH_010. A grep function was then used to count how many fragments in each sample contained that target sequence for samples in NH and NC. The proportion of fragments with the the target sequence were stored in a csv file and plotted using ggplot. 
+
 ### Contents 
 - ReadMe: Project summary and intoduction
-- Kang_FinalProject.md: A short project report 
 - Kang_SpartinaSNP.R: The raw R code used to develop the analysis, with comments
 - Kang_FinalProjectJournal_CMB523.rmd: Project journal where background research, tutorials, project development, and dead-ends are documented
 
