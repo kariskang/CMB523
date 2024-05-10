@@ -10,7 +10,7 @@ All *Spartina* RADseq data was downloaded from the [study's page on GenBank](htt
 
 ### Contents 
 - ReadMe: Project summary and intoduction
-- Kang_FinalProject.md: The project report 
+- Kang_FinalProject.md: A short project report 
 - Kang_SpartinaSNP.R: The raw R code used to develop the analysis, with comments
 - Kang_FinalProjectJournal_CMB523.rmd: Project journal where background research, tutorials, project development, and dead-ends are documented
 
