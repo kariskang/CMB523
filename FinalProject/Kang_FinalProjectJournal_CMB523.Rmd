@@ -1,0 +1,388 @@
+---
+title: "Final Project Journal"
+author: "Karis Kang"
+date: "Spring 2024"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Project Notes (April 3, 2024)
+
+Switched from tidal data project to comparing plant populations using RADSeq data, using data from Li et al. 2022, "The Role of Genetic Factors in the Differential Invasion Success of Two *Spartina* Species in China". 
+
+Genetic data found in GenBank under accession numbers SRR18493548 through SRR18493635. My goal is to identify which of these samples are for *Spartina alterniflora* (called "*Sporobolus alterniflora*" in GenBank), as that's the species I want to do my dissertation on, and then download samples from at least 3 different populations. 
+
+I'm going to familiarize myself with the data by downloading the FASTA file for SRR18493548 and taking a look at what the data format looks like. 
+
+Note to self: It took more than 5 min to download 1 GB of data; consider getting an ethernet connection for future downloads
+
+Update after speaking with Dr. Fisk: Downloading 30 FASTA files and then comparing sequence reads between them is going to take a long time. Individual samples are also usually compared to a reference genome. A better approach for the purposes of learning through a final project might be to learn how to compare a few samples to a reference genome, then see if I can find a table of genetic differences from the reference that's already been assembled and use that for cross-population analysis
+
+## Project Notes (April 17-24, worked on this on and off)
+
+Go through this RADSeq exercise [https://training.galaxyproject.org/training-material/topics/ecology/tutorials/ref-based-rad-seq/tutorial.html] with stickleback spine population data to get a better idea of how to import, process, and analyze RADseq data
+
+Also play around with this *Lactuca sativa* dataset to practice comparing individual sample reads with a reference genome [https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8661492/]
+
+Another RADseq tutorial through Evomics using the Bioconductor and rsamtool packages
+https://evomics.org/learning/population-and-speciation-genomics/2016-population-and-speciation-genomics/r-radseq-exercise/
+
+### Evomics tutorial code
+
+```{r}
+
+##Install required software BiocManager from https://bioconductor.org/
+if(!require("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+
+##Install packages Rsamtools and Shortread to manage RADseq data
+BiocManager::install("Rsamtools")
+BiocManager::install("ShortRead")
+
+###Exercise 1
+
+##import library "ShortRead" and tutorial data using the readFastq function
+#note to self: be sure to define the dirPath, syntax very particular
+library(ShortRead)
+d<-readFastq(dirPath = "../Evomics Tutorial", 
+             pattern = 'illumina.SE100.fastq', withIds = T)
+
+##Call the read ID's of the ShortRead object 
+id(d)[1:4] #just the first four elements
+
+##Call the sequences 
+#note to self: oh the short sequence reads show up in the console IN COLOR, very neat
+sread(d)[1:5]
+
+##Call sequences qualities 
+quality(d)[1:5]
+
+##Pattern matching & counting using grep 
+grep("TATATATATATATATATATA", sread(d))
+
+match <- grep("TATATATATATATATATATA", sread(d))
+length(match)
+match
+##Subsetting of ShortRead object 
+#note to self: I think this means...pulling the sequences that actually have the
+#sequence searched for in the grep function? 
+#so all the short reads in this fastq file that have TATATATATATATATATATA" in them
+d.match<- d[match]
+sread(d.match)
+
+##Cleaning a ShortRead object 
+d.clean<-clean(d) #removes all reads with >= 1 'N'
+sread(d.clean)[1]
+
+##Trimming a Shortread object 
+d.trim<- narrow(d.match, start = 1, end = 10) #either end or width 
+quality(d.trim)
+
+##Writing a ShortRead object out as a fastq file
+writeFastq(d.clean, file="../Evomics Tutorial/my.clean.reads.fastq")
+
+###Exercise 2 
+
+##Upload a stickleback alignment to R, and inspect the elements
+infile<-'CGATA.bam'
+param <- ScanBamParam(flag = scanBamFlag(isUnmappedQuery = FALSE),
+                      what = c("rname", "pos", "seq", "qual"), 
+                      reverseComplement = TRUE)
+f<- scanBam(infile, param = param)[[1]]
+chrom <- f$rname # extract the chromosome name
+pos <- f$pos #the alignment position
+seqs <- f$seq #and the sequence
+chrom[1]
+pos[1]
+seqs[1]
+
+##Sequences of RAD locus with position 68564 
+loc <- "68564"
+idx <- which(pos == loc) # very fast pattern search
+stack <- seqs[idx]
+stack
+
+##For this RAD locus, inspect coverage and the haplotype distribution 
+hplt<- sort(table(stack), decreasing = T)
+hplt
+
+##Same for RAD locus with position 107127
+hplt<-sort(table(seqs[which(pos==107127)]), decreasing = T)
+hplt
+
+##A minimal consensus genotyping loop, compiling chromosome ID, 
+##position, and diploid consensus genotype in object A
+
+loci <-c(68564, 107127)
+A <- c("chrom", "pos", "seq") # empty data container with header
+for (i in 1:length(loci)) {
+  loc <- loci[i] # loop through the elements of 'loci'
+  stack <- seqs[which(pos == loc)]
+  hplt <- sort(table(stack), decreasing = T)
+  A <- rbind(A, c("chrIII", loc, names(hplt)[1])) # attach haplotypes
+  A <- rbind(A, c("chrIII", loc, names(hplt)[1]))
+}
+A
+
+write.table(A,file='my.consensus.gtps.txt', 
+            row.names=FALSE, col.names=FALSE, quote=FALSE)
+
+## Exercise 2 Tasks 
+
+#Upload stickleback alignment CGATA.bam (already done above)
+#Clip the restriction overhang from the sequences
+taskseqs<- narrow(seqs, start = 7, end = 70)
+taskseqs
+
+#note to self: so the restriction overhang is the first 6 nucleotides in the sequence?
+
+#from command dictionary at https://evomics.org/wp-content/uploads/2016/01/cheat.sheet_2016.pdf
+#narrow(X, start=, end=, width=) Trims an object (e.g. ShortRead 
+#object) to the span specified (only two arguments needed, e.g. start & end)
+
+#Access the sequences for the RAD locus with position 1,571,469 
+
+taskloc<- "1571469"
+taskidx<-which(pos == taskloc)
+taskstack <- taskseqs[taskidx]
+taskstack
+
+#Inspect coverage and haplotype distribution for this locus
+length(taskstack)
+taskhplt<-sort(table(taskstack), decreasing = T)
+taskhplt
+
+#Object X containing position and diploid consensus genotype for RAD locus 1571469
+X <- c("pos", "seq")
+X <- rbind(X, c(taskloc, names(taskhplt)[1])) #1st haplotype
+X <- rbind(X, c(taskloc, names(taskhplt)[2])) #2nd haplotype
+print(X)
+
+#Now do the same for RAD locus 2298848
+taskloc<-"2298848" 
+taskstack<-taskseqs[which(pos == taskloc)]
+taskhplt <- sort(table(taskstack), decreasing = T)
+taskhplt
+X <- rbind(X, c(taskloc, names(taskhplt)[1]))
+X <- rbind(X, c(taskloc, names(taskhplt)[2]))
+X
+
+##Write to text file 
+
+write.table(X, file = '../Evomics Tutorial/CGATA.consensus.txt',
+            row.names = FALSE, col.names=FALSE, quote= FALSE)
+```
+
+## Project Notes (April 25-28)
+After trying to use Liu et al. 2022 data this week, have finally decided the data is too unwieldy at >1 GB per FASTQ; switched to RADseq data from Zerebecki et al. 2021 paper for SNP analysis, practicing commands learned from Evomics tutorial. 
+
+Cannot run actual alignment, but I can try to use grep and ShortRead functions to find a target sequence in a series of FASTQ files.
+
+```{r}
+#Initial data exploration 
+#
+NH10<-readFastq(dirPath = "../Final Project/Zerebecki FASTQ", 
+             pattern = 'SRR14677000.fastq.gz', withIds = T)
+NH15<-readFastq(dirPath = "../Final Project/Zerebecki FASTQ", 
+              pattern = 'SRR14677301.fastq.gz', withIds = T)
+NH20<-readFastq(dirPath = "../Final Project/Zerebecki FASTQ", 
+              pattern = 'SRR14677296.fastq.gz', withIds = T)
+
+#inspect a subset of the data; sequences 1000 to 2000 for example
+id(NH10)[1000:2000]
+sread(NH10)[1000:2000]
+quality(NH10)[1000:2000] #hm doesn't look like there's any phred data?
+
+id(NH15)[1000:2000]
+sread(NH15)[1000:2000]
+
+id(NH20)[1000:2000] #lengths inconsistent; other samples have 85, this 69 or 86
+sread(NH20)[1000:2000]
+
+#subset a portion of each sample seq and store it in a new object
+NH10_subset <- NH10[10001:20000]
+NH15_subset <- NH15[10001:20000]
+NH20_subset <- NH20[10001:20000]
+
+#count n-reads aka all reads with >= "N" for each subset
+length(grep("N", sread(NH10_subset)))/length(NH10_subset) #0.0014 n reads
+length(grep("N", sread(NH15_subset)))/length(NH15_subset) #0.0006 n reads
+length(grep("N", sread(NH20_subset)))/length(NH20_subset) #0.0005 n reads
+
+#remove n reads from each subset using clean function 
+NH10_subset<-clean(NH10_subset)
+NH15_subset<-clean(NH15_subset)
+NH20_subset<-clean(NH20_subset)
+
+#Check how many reads in subset have a certain sequence
+#Lets got with GATTACA
+
+length(grep("GATTACA", narrow(sread(NH10_subset), 
+                              start = 1, width = 7)))/length(NH10_subset) #0.0006008412 have it
+length(grep("GATTACA", narrow(sread(NH15_subset), 
+                              start = 1, width = 7)))/length(NH15_subset) #0.0007004203 have it
+length(grep("GATTACA", narrow(sread(NH20_subset), 
+                              start = 1, width = 7)))/length(NH20_subset) #0.0002001001 have it
+
+#filter out all reads with GATTACA and store it in new object
+NH10_GATTACA <- NH10_subset[grep("GATTACA", narrow(sread(NH10_subset), start = 1, width = 7))]
+sread(NH10_GATTACA) #6 reads from the subset have GATTACA in them
+
+NH15_GATTACA <- NH15_subset[grep("GATTACA", narrow(sread(NH15_subset), start = 1, width = 7))]
+sread(NH15_GATTACA) #7 reads from the subset have GATTACA in them 
+
+NH20_GATTACA <- NH20_subset[grep("GATTACA", narrow(sread(NH20_subset), start = 1, width = 7))]
+sread(NH20_GATTACA) #2 reads from the subset have GATTACA in them 
+
+#proceeding with data as is rather than filter for good overhang
+
+#write out the subset reads with GATTACA into a fastq
+writeFastq(NH10_GATTACA, file = '../Final Project/GATTACA_NH10.fastq')
+
+#I attempt the ambitious task of trying to prepare these subsets for alignment, and fail
+
+#store the 6 reads with GATTACA in them into a vector with site labels
+NH1 <- readFastq(dirPath = '../Final Project', 
+                 pattern='GATTACA_NH10.fastq', withIds = T)
+
+GATTACA <- c("site", "seq")
+GATTACA <- rbind(GATTACA, c("NH", NH1[1])) #trying to add location and sequence
+sread(GATTACA)# this does not work; value added to "seq" is unreadable, not sequence data
+
+#Turns out I can't do RADSeq alignments to a reference genome without using command line
+#It's outside the scope of this class, will learn later 
+
+#Barriers to proceeding: 
+#1) unsure what the sequence of the restriction overhang is
+#2) also unsure of how many bp long barcodes are, cannot clip them
+#3) I have, perhaps predictably, not managed to learn how to use Stacks from the command line in a week
+#Back to the drawing board! 
+
+#New direction: create script that can find number of occurrences for a short sequence
+#store it, and compare between sites
+#whole fastaq file read has ~700,000 reads; if 1000 reads gives 7 occurrences of GATTACA
+#then how does subset sampling compare to the whole thing? 
+
+targetseq<-"GATTACA"
+seqwidth<- nchar(targetseq)
+sample<-c(NH10, NH15, NH20)
+samplenames<- c("NH10", "NH15", "NH20")
+NH_sites <- c("sampleID", "targetseq")
+SeqProp<-0
+
+#Unfinished attempt at writing a loop to find my target sequence in a list of samples
+
+#for(i in sample){
+  #prop<-length(grep(targetseq, narrow(sread(i), 
+                              #start = 1, width = seqwidth)))/length(i)
+  #SeqProp[i]<-unlist(prop)
+  #}
+
+#for(a in samplenames){
+  #NH_sites <- rbind(NH_sites, c(a, SeqProp[i]))}
+#SeqProp
+```
+
+Above is test code used to develop the R script eventually used to generate the data for the presentation. The R script for that code can be found in the project folder under "Kang_SpartinaSNP.R"
+
+__Sample Organization (as compiled from BioSample and SRA metadata):__
+New Hampshire: 
+Site: Great Bay, NH
+Year: 2012
+LatLong: 43.091489 N 70.864721 W
+
+File name: SRR14677000.fastq.gz
+BioSample: SAMN19370416 
+Sample name: Spartina_NHH_010
+SRA: SRS9088595
+
+File name: SRR14677304
+BioSample: SAMN19370418; 
+Sample name: Spartina_NHH_012; 
+SRA: SRS9088291
+
+File name: SRR14677301
+BioSample: SAMN19370421; 
+Sample name: Spartina_NHH_015; 
+SRA: SRS9088294
+
+File name: SRR14677297
+BioSample: SAMN19370425; 
+Sample name: Spartina_NHH_019; 
+SRA: SRS9088298
+
+File name: SRR14677296
+BioSample: SAMN19370426; 
+Sample name: Spartina_NHH_020; 
+SRA: SRS9088299
+
+
+North Carolina: 
+Site: Middle Marsh, North Carolina
+Year 2012 
+LatLong: 34.689328 N 76.621075 W
+
+File name: SRR14677011.fastq.gz
+BioSample: SAMN19370406; 
+Sample name: Spartina_NCC_018; 
+SRA: SRS9088584 
+
+File name: SRR14677013.fastq.gz
+BioSample: SAMN19370404; 
+Sample name: Spartina_NCC_015; 
+SRA: SRS9088582
+
+File name: SRR14677015.fastq.gz
+BioSample: SAMN19370402; Sample name: Spartina_NCC_010; SRA: SRS9088580
+(NOT USED; one row shorter than 10 bp)
+
+File name: SRR14677014
+BioSample: SAMN19370403; 
+Sample name: Spartina_NCC_012; 
+SRA: SRS9088581
+
+File name: SRR14677018
+BioSample: SAMN19370399; 
+Sample name: Spartina_NCC_007; 
+SRA: SRS9088577
+
+SRR14677012
+BioSample: SAMN19370405; 
+Sample name: Spartina_NCC_017; 
+SRA: SRS9088583
+
+###Project Journal (Post-Presentation)
+
+Adding an ANOVA after presentation feedback - no differences found among sites either in proportion of fragments containing the target sequence, or in number of fragments over all. 
+
+I really want to figure out how to write this loop. I spend the last few hours of Friday 5/10 seeing if I can figure this loop out.
+
+```{r}
+#Post-Presentation Coding: 
+subsample<-read.csv("TTGGACTAAT_subsamplecount.csv")
+
+#ANOVA 
+proportion<-aov(seqprop ~ site, data = subsample)
+summary(proportion) #P-value is 0.973, really no difference in frequency of target sequence among sites
+
+fragments<-aov(fragcount ~ site, data = subsample)
+summary(fragments) #P-value is 0.136, no difference in number of fragments among sites
+
+#I try for one last time to make this loop work before turning this in
+NHsamples <-c(clean_NH10, clean_NH12, clean_NH15, clean_NH19, clean_NH20)
+seq <- "TTGGACTAAT"
+seqfreq<-function(samples, targetseq){
+  for(i in samples){
+    freqcount<- grep(targetseq, narrow(sread(samples), 
+                      start = 1, width = nchar(targetseq)))
+  }
+  print(freqcount)
+}
+seqfreq(NHsamples, seq)
+#nope, not happening
+```
+
+
