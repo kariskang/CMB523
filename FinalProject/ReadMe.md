@@ -15,13 +15,9 @@ Year: 2012
 LatLong: 43.091489 N 70.864721 W
 
 Sample name: Spartina_NHH_010; File name: SRR14677000.fastq.gz; BioSample: SAMN19370416; SRA: SRS9088595
-
 Sample name: Spartina_NHH_012; File name: SRR14677304.fastq.gz; BioSample: SAMN19370418; SRA: SRS9088291
-
 Sample name: Spartina_NHH_015; File name: SRR14677301.fastq.gz; BioSample: SAMN19370421; SRA: SRS9088294
-
 Sample name: Spartina_NHH_019; File name: SRR14677297.fastq.gz; BioSample: SAMN19370425; SRA: SRS9088298
-
 Sample name: Spartina_NHH_020; File name: SRR14677296.fastq.gz; BioSample: SAMN19370426; SRA: SRS9088299
 
 __North Carolina:__
@@ -30,13 +26,9 @@ Year 2012
 LatLong: 34.689328 N 76.621075 W
 
 Sample name: Spartina_NCC_018; File name: SRR14677011.fastq.gz; BioSample: SAMN19370406; SRA: SRS9088584 
-
 Sample name: Spartina_NCC_015; File name: SRR14677013.fastq.gz; BioSample: SAMN19370404; SRA: SRS9088582
-
 Sample name: Spartina_NCC_012; File name: SRR14677014.fastq.gz; BioSample: SAMN19370403; SRA: SRS9088581
-
 Sample name: Spartina_NCC_007; File name: SRR14677018.fastq.gz; BioSample: SAMN19370399; SRA: SRS9088577
-
 Sample name: Spartina_NCC_017; File name: SRR14677012.fastq.gz; BioSample: SAMN19370405; SRA: SRS9088583
 
 ### Methods 
@@ -50,14 +42,23 @@ A random target sequence of 10 bp long was chosen from the cleaned sequence read
 
 ### References 
 Boon, J. D. (2012). Evidence of sea level acceleration at US and Canadian tide stations, Atlantic Coast, North America. Journal of Coastal Research, 28(6), 1437-1445.
+
 Bromberg, K. D., & Bertness, M. D. (2005). Reconstructing New England salt marsh losses using historical maps. Estuaries, 28, 823-832.
+
 De Groot, R., Brander, L., Van Der Ploeg, S., Costanza, R., Bernard, F., Braat, L., Christie, M., Crossman, N., Ghermandi, A., Hein, L., Hussain, S., Kumar, P., McVittie, A., Portela, R., Rodriguez, L. C., ten Brink, P., & Van Beukering, P. (2012). Global estimates of the value of ecosystems and their services in monetary units. Ecosystem services, 1(1), 50-61.
+
 Hughes, A. R., & Lotterhos, K. E. (2014). Genotypic diversity at multiple spatial scales in the foundation marsh species, Spartina alterniflora. Marine Ecology Progress   Series, 497, 105-117.
+
 Kramer, A. T., & Havens, K. (2009). Plant conservation genetics in a changing world. Trends in plant science, 14(11), 599-607.
 Macreadie, P. I., Costa, M. D., Atwood, T. B., Friess, D. A., Kelleway, J. J., Kennedy, H., Lovelock, C. E., Serrano, O., & Duarte, C. M. (2021). Blue carbon as a natural climate solution. Nature Reviews Earth & Environment, 2(12), 826-839.
+
 Mcleod, E., Chmura, G. L., Bouillon, S., Salm, R., Björk, M., Duarte, C. M., Lovelock, C. E., Schlesinger, W. H., & Silliman, B. R. (2011). A blueprint for blue carbon: toward an improved understanding of the role of vegetated coastal habitats in sequestering CO2. Frontiers in Ecology and the Environment, 9(10), 552-560.
+
 Narayan, S., Beck, M. W., Wilson, P., Thomas, C. J., Guerrero, A., Shepard, C. C., Reguero, B. G., Franco, G., Ingram, J. C., & Trespalacios, D. (2017). The value of coastal wetlands for flood damage reduction in the northeastern USA. Scientific reports, 7(1), 9463.
+
 Sallenger Jr, A. H., Doran, K. S., & Howd, P. A. (2012). Hotspot of accelerated sea-level rise on the Atlantic coast of North America. Nature Climate Change, 2(12), 884-888.
 Zambrano, J., Garzon-Lopez, C. X., Yeager, L., Fortunel, C., Cordeiro, N. J., & Beckman, N. G. (2019). The effects of habitat loss and fragmentation on plant functional traits and functional diversity: what do we know so far? Oecologia, 191, 505-518.
+
 Zerebecki, R. A., Sotka, E. E., Hanley, T. C., Bell, K. L., Gehring, C., Nice, C. C., ... & Hughes, A. R. (2021). Repeated genetic and adaptive phenotypic divergence across tidal elevation in a foundation plant species. The American Naturalist, 198(5), E152-E169.
+
 zu Ermgassen, P. S., Baker, R., Beck, M. W., Dodds, K., zu Ermgassen, S. O., Mallick, D., Taylor, M.D., & Turner, R. E. (2021). Ecosystem services: Delivering decision-making for salt marshes. Estuaries and Coasts, 44(6), 1691-1698.
