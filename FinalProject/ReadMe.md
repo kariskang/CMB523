@@ -10,12 +10,7 @@ All *Spartina* RADseq data was downloaded from the [study's page on GenBank](htt
 
 #### Samples: 
 __New Hampshire:__
-
-Site: Great Bay, NH 
-
-Year: 2012
-
-LatLong: 43.091489 N 70.864721 W
+Site: Great Bay, NH; Year: 2012; LatLong: 43.091489 N 70.864721 W
 
 Sample name: Spartina_NHH_010; File name: SRR14677000.fastq.gz; BioSample: SAMN19370416; SRA: SRS9088595
 
@@ -29,12 +24,7 @@ Sample name: Spartina_NHH_020; File name: SRR14677296.fastq.gz; BioSample: SAMN1
 
 
 __North Carolina:__
-
-Site: Middle Marsh, North Carolina
-
-Year 2012 
-
-LatLong: 34.689328 N 76.621075 W
+Site: Middle Marsh, North Carolina; Year 2012; LatLong: 34.689328 N 76.621075 W
 
 Sample name: Spartina_NCC_018; File name: SRR14677011.fastq.gz; BioSample: SAMN19370406; SRA: SRS9088584 
 
@@ -47,13 +37,16 @@ Sample name: Spartina_NCC_007; File name: SRR14677018.fastq.gz; BioSample: SAMN1
 Sample name: Spartina_NCC_017; File name: SRR14677012.fastq.gz; BioSample: SAMN19370405; SRA: SRS9088583
 
 ### Methods 
-A random target sequence of 10 bp long was chosen from the cleaned sequence read for Spartina_NHH_010. A grep function was then used to count how many fragments in each sample contained that target sequence for samples in NH and NC. The proportion of fragments with the the target sequence were stored in a csv file and plotted using ggplot. Code can be found in Kang_SpartinaSNP.R
+A random target sequence of 10 bp long was chosen from the cleaned sequence read for Spartina_NHH_010. A grep function was then used to count how many fragments in each sample contained that target sequence for samples in NH and NC. The proportion of fragments with the the target sequence were stored in a csv file and plotted using ggplot. Differences in target sequence frequency and fragment count were calculated among sites using ANOVA. Code can be found in Kang_SpartinaSNP.R
+
 ### Summary of Results 
+No differences found among sites when looking at the proportion of total fragments which contain a 10 bp target sequence (p=0.973), or in the number of fragments overall (0.136). 
 
 ### Contents 
 - ReadMe: Project intoduction and summary
 - Kang_SpartinaSNP.R: The raw R code used to develop the analysis, with comments
 - Kang_FinalProjectJournal_CMB523.rmd: Project journal where background research, tutorials, project development, and dead-ends are documented
+- ProjectData: The 10 fastq files pulled from the Zerebecki et al study that were used in this project (see "Samples" above for identifying information) and the csv file (TTGGACTAAT_subsamplecount.csv) where the proportion of fragments with the target sequence and the total number of fragments per sample were recorded
 
 ### References 
 Boon, J. D. (2012). Evidence of sea level acceleration at US and Canadian tide stations, Atlantic Coast, North America. Journal of Coastal Research, 28(6), 1437-1445.
