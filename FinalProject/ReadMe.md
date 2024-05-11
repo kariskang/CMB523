@@ -10,25 +10,40 @@ All *Spartina* RADseq data was downloaded from the [study's page on GenBank](htt
 
 #### Samples: 
 __New Hampshire:__
+
 Site: Great Bay, NH 
+
 Year: 2012
+
 LatLong: 43.091489 N 70.864721 W
 
 Sample name: Spartina_NHH_010; File name: SRR14677000.fastq.gz; BioSample: SAMN19370416; SRA: SRS9088595
+
 Sample name: Spartina_NHH_012; File name: SRR14677304.fastq.gz; BioSample: SAMN19370418; SRA: SRS9088291
+
 Sample name: Spartina_NHH_015; File name: SRR14677301.fastq.gz; BioSample: SAMN19370421; SRA: SRS9088294
+
 Sample name: Spartina_NHH_019; File name: SRR14677297.fastq.gz; BioSample: SAMN19370425; SRA: SRS9088298
+
 Sample name: Spartina_NHH_020; File name: SRR14677296.fastq.gz; BioSample: SAMN19370426; SRA: SRS9088299
 
+
 __North Carolina:__
+
 Site: Middle Marsh, North Carolina
+
 Year 2012 
+
 LatLong: 34.689328 N 76.621075 W
 
 Sample name: Spartina_NCC_018; File name: SRR14677011.fastq.gz; BioSample: SAMN19370406; SRA: SRS9088584 
+
 Sample name: Spartina_NCC_015; File name: SRR14677013.fastq.gz; BioSample: SAMN19370404; SRA: SRS9088582
+
 Sample name: Spartina_NCC_012; File name: SRR14677014.fastq.gz; BioSample: SAMN19370403; SRA: SRS9088581
+
 Sample name: Spartina_NCC_007; File name: SRR14677018.fastq.gz; BioSample: SAMN19370399; SRA: SRS9088577
+
 Sample name: Spartina_NCC_017; File name: SRR14677012.fastq.gz; BioSample: SAMN19370405; SRA: SRS9088583
 
 ### Methods 
